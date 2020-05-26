@@ -18,7 +18,6 @@ COPY go.sum .
 RUN go mod download
 
 COPY . .
-RUN ls -la
 RUN go build -v -o app cmd/main.go
 
 
