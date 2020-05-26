@@ -1,0 +1,70 @@
+project_name: telegram-webhookinfo-exporter
+
+release:
+  github:
+    owner: moonliightz
+    name: telegram-webhookinfo-exporter
+
+env:
+  - GO111MODULE=on
+  - GOPROXY=https://goproxy.io
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  -
+    main: ./cmd/main.go
+    # ldflags:
+    #   - -s -w -X main.version={{.Version}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - freebsd
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: freebsd
+        goarch: arm
+      - goos: freebsd
+        goarch: arm64
+
+archives:
+  -
+    replacements:
+      386: i386
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+nfpms:
+  -
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    vendor: Patrick Stebbe
+    homepage: https://github.com/MoonLiightz/telegram-webhookinfo-exporter
+    maintainer: Patrick Stebbe <info@moonliightz.de>
+    description: A Prometheus exporter for Telegram Bot API getWebhookInfo.
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    replacements:
+      386: i386
+      arm: armhf
