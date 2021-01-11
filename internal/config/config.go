@@ -48,7 +48,7 @@ func Load(configPath string) (*Config, error) {
 	if envBotToken := os.Getenv("BOT_TOKEN"); envBotToken != "" {
 		config.Telegram.Token = envBotToken
 	} else if config.Telegram.Token == "" {
-		return nil, errors.New("Telegram Token is missing in config.yml")
+		return nil, errors.New("Telegram Token is missing in " + configPath)
 	}
 
 	return &config, nil
