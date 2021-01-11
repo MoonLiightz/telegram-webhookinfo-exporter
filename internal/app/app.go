@@ -1,6 +1,7 @@
 package app
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,7 +16,10 @@ import (
 
 // Run starts the application
 func Run() {
-	config, err := config.Load()
+	configPath := flag.String("config", "./config.yml", "path to config.yml")
+	flag.Parse()
+
+	config, err := config.Load(*configPath)
 	if err != nil {
 		panic(err)
 	}

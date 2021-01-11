@@ -18,7 +18,7 @@ type Config struct {
 }
 
 // Load loads the config.yml file
-func Load() (*Config, error) {
+func Load(configPath string) (*Config, error) {
 	config := Config{
 		App: model.App{
 			Interval: 10,
@@ -32,7 +32,7 @@ func Load() (*Config, error) {
 		},
 	}
 
-	filename, _ := filepath.Abs("./config.yml")
+	filename, _ := filepath.Abs(configPath)
 	yamlFile, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
