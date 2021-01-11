@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/moonliightz/telegram-webhookinfo-exporter/internal/model"
@@ -44,7 +45,9 @@ func Load(configPath string) (*Config, error) {
 		return nil, err
 	}
 
-	if config.Telegram.Token == "" {
+	if envBotToken := os.Getenv("BOT_TOKEN"); envBotToken != "" {
+		config.Telegram.Token = envBotToken
+	} else if config.Telegram.Token == "" {
 		return nil, errors.New("Telegram Token is missing in config.yml")
 	}
 
