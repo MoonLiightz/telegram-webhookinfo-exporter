@@ -33,13 +33,23 @@ func Run() {
 
 	go func() {
 		var winfo *model.WebhookInfo
+		var logPraefix string
+
+		if config.Prometheus.Namespace != "" {
+			logPraefix += config.Prometheus.Namespace + "_"
+		}
+		if config.Prometheus.Subsystem != "" {
+			logPraefix += config.Prometheus.Subsystem + "_"
+		}
+		logPraefix += config.Prometheus.Name // set by default
+
 		for {
 			winfo, err = telegram.LoadWebhookInfo(config)
 			if err != nil {
 				panic(err)
 			}
 			pendingUpdateCount.Set(float64(winfo.Result.PendingUpdateCount))
-			log.Print("pending_update_count: ", winfo.Result.PendingUpdateCount)
+			log.Print(logPraefix, ": ", winfo.Result.PendingUpdateCount)
 
 			time.Sleep(time.Duration(config.App.Interval) * time.Second)
 		}
