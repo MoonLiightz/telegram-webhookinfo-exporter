@@ -21,7 +21,7 @@ func Run() {
 
 	config, err := config.Load(*configPath)
 	if err != nil {
-		panic(err)
+		log.Fatal(err.Error())
 	}
 
 	pendingUpdateCount := prometheus.NewGauge(prometheus.GaugeOpts{

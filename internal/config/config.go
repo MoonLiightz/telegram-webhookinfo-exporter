@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -36,19 +37,18 @@ func Load(configPath string) (*Config, error) {
 	filename, _ := filepath.Abs(configPath)
 	yamlFile, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return nil, err
-	}
-
-	// var config model.Config
-	err = yaml.Unmarshal(yamlFile, &config)
-	if err != nil {
-		return nil, err
+		log.Print(err.Error(), ", try to start with default configs")
+	} else {
+		err = yaml.Unmarshal(yamlFile, &config)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if envBotToken := os.Getenv("BOT_TOKEN"); envBotToken != "" {
 		config.Telegram.Token = envBotToken
 	} else if config.Telegram.Token == "" {
-		return nil, errors.New("Telegram Token is missing in " + configPath)
+		return nil, errors.New("Telegram Token is missing")
 	}
 
 	return &config, nil
