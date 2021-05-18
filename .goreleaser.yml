@@ -15,7 +15,7 @@ before:
 
 builds:
   -
-    main: ./cmd/main.go
+    main: ./cmd/tgwe/main.go
     # ldflags:
     #   - -s -w -X main.version={{.Version}}
     env:
