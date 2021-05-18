@@ -18,7 +18,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY . .
-RUN go build -v -o app cmd/main.go
+RUN go build -v -o app cmd/tgwe/main.go
 
 
 FROM scratch
